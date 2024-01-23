@@ -4,7 +4,8 @@
 
  package edu.neu.coe.info6205.randomwalk;
 
- import java.util.Random;
+ import java.util.ArrayList;
+import java.util.Random;
  
  public class RandomWalk {
  
@@ -85,15 +86,34 @@
      }
  
      public static void main(String[] args) {
- //        if (args.length == 0)
- //            throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
- //        int m = Integer.parseInt(args[0]);
-         int m = 40;
-         int n = 30;
-         if (args.length > 1) n = Integer.parseInt(args[1]);
-         double meanDistance = randomWalkMulti(m, n);
-         System.out.println(m + " steps: " + meanDistance + " over " + n + " experiments");
-     }
+        if (args.length == 0)
+            throw new RuntimeException("Syntax: RandomWalk steps [experiments]");
+
+        ArrayList<Integer> m = new ArrayList<>();
+
+        // Add elements directly to ArrayList
+        m.add(10);
+        m.add(20);
+        m.add(30);
+        m.add(40);
+        m.add(50);
+        m.add(55);
+        m.add(60);
+        m.add(70);
+        m.add(80);
+        m.add(90);
+        m.add(100);
+        m.add(110);
+        m.add(120);
+        m.add(130);
+
+        int n = 30;
+        if (args.length > 1) n = Integer.parseInt(args[1]);
+
+        for(int i=0;i<m.size();i++)
+        {double meanDistance = randomWalkMulti(m.get(i), n);
+            System.out.println(m.get(i) + " steps: " + meanDistance + " over " + n + " experiments");}
+    }
  
  }
  
