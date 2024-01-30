@@ -35,7 +35,6 @@ public class Newton {
      * @param tolerance the required precision for the value of f(x) to be considered equal to zero.
      * @return either a Double (the actual root) or a String explaining why no root could be found.
      */
-    
     public Either<String, Double> solve(final double x0, final int maxTries, final double tolerance) {
         double x = x0;
         int tries = maxTries;
@@ -58,7 +57,7 @@ public class Newton {
         // Solve the problem starting with a value of x = 1;
         // requiring a precision of 10^-7;
         // and giving up after 200 tries.
-        Either<String, Double> result = newton.solve(0.5, 200, 1E-7);
+        Either<String, Double> result = newton.solve(1.0, 200, 1E-7);
 
         // Process the result
         result.apply(

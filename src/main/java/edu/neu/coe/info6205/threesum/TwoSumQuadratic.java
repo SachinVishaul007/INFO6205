@@ -32,7 +32,6 @@ class TwoSumQuadratic implements TwoSum {
         return pairs.stream().distinct().toArray(Pair[]::new);
     }
 
-
     private final int[] a;
     private final int length;
 }
