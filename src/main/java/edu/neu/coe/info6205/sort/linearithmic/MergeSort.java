@@ -1,8 +1,11 @@
 package edu.neu.coe.info6205.sort.linearithmic;
 
 import edu.neu.coe.info6205.sort.Helper;
+import edu.neu.coe.info6205.sort.InstrumentedHelper;
 import edu.neu.coe.info6205.sort.SortWithHelper;
 import edu.neu.coe.info6205.sort.elementary.InsertionSort;
+import edu.neu.coe.info6205.util.Benchmark;
+import edu.neu.coe.info6205.util.Benchmark_Timer;
 import edu.neu.coe.info6205.util.Config;
 
 import java.util.Arrays;
@@ -39,7 +42,6 @@ public class MergeSort<X extends Comparable<X>> extends SortWithHelper<X> {
         insertionSort = new InsertionSort<>(getHelper());
     }
 
-    @Override
     public X[] sort(X[] xs, boolean makeCopy) {
         getHelper().init(xs.length);
         X[] result = makeCopy ? Arrays.copyOf(xs, xs.length) : xs;
@@ -47,7 +49,6 @@ public class MergeSort<X extends Comparable<X>> extends SortWithHelper<X> {
         return result;
     }
 
-    @Override
     public void sort(X[] a, int from, int to) {
         // CONSIDER don't copy but just allocate according to the xs/aux interchange optimization
         X[] aux = Arrays.copyOf(a, a.length);
@@ -64,24 +65,12 @@ public class MergeSort<X extends Comparable<X>> extends SortWithHelper<X> {
             return;
         }
 
-        // TO BE IMPLEMENTED  : implement merge sort with insurance and no-copy optimizations
+        int mid = from + (to - from)/2;
+        sort(aux, a, from, mid);
+        sort(aux, a, mid, to);
+        boolean leftSorted = true, rightSorted = true;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-throw new RuntimeException("implementation missing");
+        merge(aux, a, from, mid, to);
     }
 
     // CONSIDER combine with MergeSortBasic perhaps.
@@ -110,4 +99,32 @@ throw new RuntimeException("implementation missing");
     }
 
     private final InsertionSort<X> insertionSort;
+
+    public static void main (String[] args) {
+        int N = 10000;
+
+        while(N<=256000) {
+            InstrumentedHelper<Integer> instrumentedHelper = new InstrumentedHelper<>("MergeSort", Config.setupConfig("true", "0", "0", "", ""));
+            MergeSort<Integer> hs = new MergeSort<>(instrumentedHelper);
+            int x = N;
+            hs.init(x);
+            Integer[] xs = instrumentedHelper.random(Integer.class, r -> r.nextInt(x));
+            Benchmark<Boolean> benchmark = new Benchmark_Timer<>("Sorting", b -> hs.sort(xs, 0, x));
+            double time = benchmark.run(true, 20);
+            long compares = instrumentedHelper.getCompares();
+            long swaps = instrumentedHelper.getSwaps();
+            long hits = instrumentedHelper.getHits();
+
+            System.out.println("When array size is: " + x);
+            System.out.println("Compares: " + compares);
+            System.out.println("Swaps: " + swaps );
+            System.out.println("Hits: " + hits);
+            System.out.println("Time: " + time);
+
+            System.out.println("\nFor references:\t" + x + "\t" + compares + "\t" + swaps + "\t" + hits + "\t" + time + "\n");
+
+            N = N*2;
+        }
+}
+
 }
